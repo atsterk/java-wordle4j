@@ -1,7 +1,6 @@
 package ru.yandex.practicum;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,18 +11,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WordleTest {
-    private static PrintWriter logFile;
-    private static WordleDictionary dictionary;
     private static WordleGame wordleGame;
 
     @BeforeEach
     void doSomething() {
-        logFile = new PrintWriter(System.out);
+        PrintWriter logFile = new PrintWriter(System.out);
         List<String> words = new ArrayList<>();
         words.add("трава");
         words.add("бочка");
         words.add("ведро");
-        dictionary = new WordleDictionary(words, logFile);
+        WordleDictionary dictionary = new WordleDictionary(words, logFile);
         wordleGame = new WordleGame(dictionary, logFile, "трава");
     }
 

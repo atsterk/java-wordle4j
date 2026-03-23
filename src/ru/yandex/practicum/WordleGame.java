@@ -68,7 +68,7 @@ public class WordleGame {
         }
         guessesMap.put(guess, hint.toString());
         steps--;
-        hint.append(" Осталось попыток - " + steps);
+        hint.append(" Осталось попыток - ").append(steps);
 
         return hint.toString();
     }

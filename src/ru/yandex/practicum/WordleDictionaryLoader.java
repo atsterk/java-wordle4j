@@ -5,8 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +15,8 @@ import java.util.List;
  */
 public class WordleDictionaryLoader {
     private static final int WORD_LENGTH = 5;
-    private String path;
-    private PrintWriter logFile;
+    private final String path;
+    private final PrintWriter logFile;
 
     public WordleDictionaryLoader(String path, PrintWriter logFile) {
         this.path = path;

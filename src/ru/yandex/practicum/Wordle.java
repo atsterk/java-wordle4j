@@ -1,8 +1,7 @@
 package ru.yandex.practicum;
 
-import java.io.File;
+
 import java.io.PrintWriter;
-import java.util.Locale;
 import java.util.Scanner;
 
 /*
