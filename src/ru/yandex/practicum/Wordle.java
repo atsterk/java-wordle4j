@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class Wordle {
     private static final String LOG_FILE_NAME = "log.txt";
     private static final String PATH_TO_DICTIONARY = "words_ru.txt";
+
     public static void main(String[] args) {
         try (PrintWriter logFile = new PrintWriter(LOG_FILE_NAME)) {
             WordleDictionaryLoader dictionaryLoader = new WordleDictionaryLoader(PATH_TO_DICTIONARY, logFile);
@@ -25,7 +26,7 @@ public class Wordle {
             System.out.println("Начало игры Wordle");
             Scanner scanner = new Scanner(System.in);
 
-            while(gameInstance.ready()) {
+            while (gameInstance.ready()) {
                 try {
                     System.out.println("Введите слово из 5 букв или нажмите Enter для получения подсказки");
                     String guess = scanner.nextLine().toLowerCase().replace("ё", "e");
