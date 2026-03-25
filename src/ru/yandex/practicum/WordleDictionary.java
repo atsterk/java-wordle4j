@@ -10,17 +10,16 @@ import java.util.*;
  */
 public class WordleDictionary {
 
-    private final List<String> words;
-    private final PrintWriter logFile;
+    public final List<String> words;
+    public final PrintWriter logFile;
 
     public WordleDictionary(List<String> words, PrintWriter logFile) {
         this.words = words;
         this.logFile = logFile;
-        normalize();
     }
 
-    public void normalize() {
-        words.replaceAll(s -> s.toLowerCase().replace("ё", "e"));
+    public static String normalize(String word) {
+        return word.toLowerCase().replace("ё", "e");
     }
 
     public String getRandomWord() {
@@ -31,7 +30,7 @@ public class WordleDictionary {
         return words.contains(word);
     }
 
-    public String getGuessWord(LinkedHashMap<String, String> guessesMap) {
+    public String getGuessWord(Map<String, String> guessesMap) {
         if (guessesMap.isEmpty()) {
             return getRandomWord();
         }
@@ -58,18 +57,31 @@ public class WordleDictionary {
             for (int i = 0; i < word.length(); i++) {
                 if (possibleWord.charAt(i) != '?' && word.charAt(i) != possibleWord.charAt(i)) {
                     skip = true;
+                    break;
                 }
             }
+            if (skip) {
+                continue;
+            }
+
             for (char letter : possibleLetters) {
                 if (word.indexOf(letter) == -1) {
                     skip = true;
+                    break;
                 }
             }
+
+            if (skip){
+                continue;
+            }
+
             for (char letter : impossibleLetters) {
                 if (word.indexOf(letter) != -1) {
                     skip = true;
+                    break;
                 }
             }
+
             if (!skip) {
                 return word;
             }

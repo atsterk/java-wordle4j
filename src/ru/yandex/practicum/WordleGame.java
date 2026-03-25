@@ -2,6 +2,7 @@ package ru.yandex.practicum;
 
 import java.io.PrintWriter;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /*
 в этом классе хранится словарь и состояние игры
@@ -22,7 +23,7 @@ public class WordleGame {
     private int steps;
     private final WordleDictionary dictionary;
     private final PrintWriter logFile;
-    LinkedHashMap<String, String> guessesMap;
+    private final Map<String, String> guessesMap;
     private boolean isGuessed;
 
     public WordleGame(WordleDictionary dictionary, PrintWriter logFile, String answer) {

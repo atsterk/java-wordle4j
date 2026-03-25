@@ -29,7 +29,7 @@ public class Wordle {
             while (gameInstance.ready()) {
                 try {
                     System.out.println("Введите слово из 5 букв или нажмите Enter для получения подсказки");
-                    String guess = scanner.nextLine().toLowerCase().replace("ё", "e");
+                    String guess = WordleDictionary.normalize(scanner.nextLine());
                     if (guess.isEmpty()) {
                         guess = gameInstance.getGuess();
                         System.out.println(guess);

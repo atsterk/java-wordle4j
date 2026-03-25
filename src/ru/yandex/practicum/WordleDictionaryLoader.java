@@ -23,20 +23,19 @@ public class WordleDictionaryLoader {
         this.logFile = logFile;
     }
 
-    public WordleDictionary getDictionary() throws IOException {
+    public WordleDictionary getDictionary() {
         List<String> words = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(path, StandardCharsets.UTF_8))) {
             while (br.ready()) {
                 String word = br.readLine();
                 if (word.length() == WORD_LENGTH) {
-                    words.add(word);
+                    words.add(WordleDictionary.normalize(word));
                 }
             }
-            return new WordleDictionary(words, logFile);
         } catch (IOException exp) {
             logFile.println(exp.getMessage());
-            throw exp;
         }
+        return new WordleDictionary(words, logFile);
     }
 }
