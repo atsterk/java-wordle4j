@@ -71,7 +71,7 @@ public class WordleDictionary {
                 }
             }
 
-            if (skip){
+            if (skip) {
                 continue;
             }
 
