@@ -23,19 +23,26 @@ public class WordleDictionaryLoader {
         this.logFile = logFile;
     }
 
-    public WordleDictionary getDictionary() {
-        List<String> words = new ArrayList<>();
+    public WordleDictionary getDictionary() throws RuntimeException {
 
         try (BufferedReader br = new BufferedReader(new FileReader(path, StandardCharsets.UTF_8))) {
+            List<String> words = new ArrayList<>();
+
             while (br.ready()) {
                 String word = br.readLine();
                 if (word.length() == WORD_LENGTH) {
-                    words.add(WordleDictionary.normalize(word));
+                    words.add(Wordle.normalize(word));
                 }
             }
+
+            return new WordleDictionary(words, logFile);
+
         } catch (IOException exp) {
-            logFile.println(exp.getMessage());
+            logFile.println("Не удалось открыть файл");
+            throw new RuntimeException(exp);
         }
-        return new WordleDictionary(words, logFile);
+        //return new WordleDictionary(words, logFile);
+        //вместо возвращения пустого словаря в катч блоке отлавливаю исключение и
+        //оборачиваю в рантайм потому что такой ситуации не должно происходить и оно отловится в мейне
     }
 }

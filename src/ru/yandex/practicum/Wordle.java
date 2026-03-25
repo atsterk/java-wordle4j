@@ -29,11 +29,14 @@ public class Wordle {
             while (gameInstance.ready()) {
                 try {
                     System.out.println("Введите слово из 5 букв или нажмите Enter для получения подсказки");
-                    String guess = WordleDictionary.normalize(scanner.nextLine());
+                    String guess = scanner.nextLine();
+
                     if (guess.isEmpty()) {
                         guess = gameInstance.getGuess();
                         System.out.println(guess);
                     }
+
+                    guess = normalize(guess);
                     String hint = gameInstance.makeGuess(guess);
                     System.out.println(hint);
                 } catch (GameException exp) {
@@ -46,8 +49,12 @@ public class Wordle {
                 System.out.println("К сожалению, угадать слово не получилось");
             }
         } catch (Exception exp) {
-            System.err.println("Критическая ошибка " + exp.getMessage());
+            System.err.println("Критическая ошибка, подробности в логе");
         }
+    }
+
+    public static String normalize(String word) {
+        return word.toLowerCase().replace("ё", "e");
     }
 
 }

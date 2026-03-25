@@ -10,16 +10,12 @@ import java.util.*;
  */
 public class WordleDictionary {
 
-    public final List<String> words;
+    private final List<String> words;
     public final PrintWriter logFile;
 
     public WordleDictionary(List<String> words, PrintWriter logFile) {
         this.words = words;
         this.logFile = logFile;
-    }
-
-    public static String normalize(String word) {
-        return word.toLowerCase().replace("ё", "e");
     }
 
     public String getRandomWord() {
@@ -34,6 +30,7 @@ public class WordleDictionary {
         if (guessesMap.isEmpty()) {
             return getRandomWord();
         }
+
         StringBuilder possibleWord = new StringBuilder("?????");
         Set<Character> possibleLetters = new HashSet<>();
         Set<Character> impossibleLetters = new HashSet<>();
@@ -51,42 +48,44 @@ public class WordleDictionary {
             }
         }
 
+        //цикл для прохода по всем словам словаря и проверки подходит ли каждое как подсказка
+        outerloop:
         for (String word : words) {
-            boolean skip = guessesMap.containsKey(word);
 
+            //проверка угадывалось ли слово ранее
+            if (guessesMap.containsKey(word)) {
+                continue;
+            }
+
+            //цикл для проверки имеются ли все уже известные по предыдущим подсказкам буквы "+" в слове
             for (int i = 0; i < word.length(); i++) {
                 if (possibleWord.charAt(i) != '?' && word.charAt(i) != possibleWord.charAt(i)) {
-                    skip = true;
-                    break;
+                    continue outerloop; //если слово не подходит переходим к следующему слову
                 }
             }
-            if (skip) {
-                continue;
-            }
 
+            //цикл для проверки имеются ли все уже известные по предыдущим подсказкам буквы "^" в слове
             for (char letter : possibleLetters) {
                 if (word.indexOf(letter) == -1) {
-                    skip = true;
-                    break;
+                    continue outerloop; //если слово не подходит переходим к следующему слову
                 }
             }
 
-            if (skip) {
-                continue;
-            }
-
+            //цикл для проверки что в слове нет букв "-"
             for (char letter : impossibleLetters) {
                 if (word.indexOf(letter) != -1) {
-                    skip = true;
-                    break;
+                    continue outerloop; //если слово не подходит переходим к следующему слову
                 }
             }
 
-            if (!skip) {
-                return word;
-            }
+            //если во всех циклах все проверки прошли, то слово подходит как подсказка
+            return word;
+
         }
 
-        return "";
+        // Заменил return "" потому что такого не должно происходить, поэтому вместо этого в лог записываю ошибку
+        // и выкидываю исключение, которое дальше в мейне отловится
+        logFile.println("Поиск подсказки от компьютера не нашел подходящего слова в словаре.");
+        throw new RuntimeException();
     }
 }
