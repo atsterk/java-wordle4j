@@ -1,5 +1,9 @@
 package ru.yandex.practicum;
 
+
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 /*
 в главном классе нам нужно:
     создать лог-файл (он должен передаваться во все классы)
@@ -10,9 +14,47 @@ package ru.yandex.practicum;
     вывести состояние игры и конечный результат
  */
 public class Wordle {
+    private static final String LOG_FILE_NAME = "log.txt";
+    private static final String PATH_TO_DICTIONARY = "words_ru.txt";
 
     public static void main(String[] args) {
+        try (PrintWriter logFile = new PrintWriter(LOG_FILE_NAME)) {
+            WordleDictionaryLoader dictionaryLoader = new WordleDictionaryLoader(PATH_TO_DICTIONARY, logFile);
+            WordleDictionary dictionary = dictionaryLoader.getDictionary();
+            WordleGame gameInstance = new WordleGame(dictionary, logFile, dictionary.getRandomWord());
 
+            System.out.println("Начало игры Wordle");
+            Scanner scanner = new Scanner(System.in);
+
+            while (gameInstance.ready()) {
+                try {
+                    System.out.println("Введите слово из 5 букв или нажмите Enter для получения подсказки");
+                    String guess = scanner.nextLine();
+
+                    if (guess.isEmpty()) {
+                        guess = gameInstance.getGuess();
+                        System.out.println(guess);
+                    }
+
+                    guess = normalize(guess);
+                    String hint = gameInstance.makeGuess(guess);
+                    System.out.println(hint);
+                } catch (GameException exp) {
+                    System.out.println(exp.getMessage() + " Попробуйте снова");
+                }
+            }
+            if (gameInstance.isGuessed()) {
+                System.out.println("Поздравляю, вы угадали слово");
+            } else {
+                System.out.println("К сожалению, угадать слово не получилось");
+            }
+        } catch (Exception exp) {
+            System.err.println("Критическая ошибка, подробности в логе");
+        }
+    }
+
+    public static String normalize(String word) {
+        return word.toLowerCase().replace("ё", "e");
     }
 
 }
